@@ -12,25 +12,22 @@ class Validator
   end
 
   def validate
-    data = [get_rows, get_columns, get_square]
-    result = nil
+    data = [rows, columns, squares]
 
     data.each do |value|
-      if data.map{|v| is_valid(v)}.include?(false)
-        result = 'Sudoku is invalid.'
-      elsif have_zeros(value) == false && is_valid(value)
-        result = 'Sudoku is valid but incomplete.'
+      if data.map { |v| valid?(v) }.include?(false)
+        return 'Sudoku is invalid.'
+      elsif zeros?(value) == false && valid?(value)
+        return 'Sudoku is valid but incomplete.'
       else
-        result = 'Sudoku is valid.'
+        return 'Sudoku is valid.'
       end
     end
-
-    result
   end
 
   private
 
-  def have_zeros(data)
+  def zeros?(data)
     data.each do |row|
       if row.include?('0')
         return false
@@ -40,7 +37,7 @@ class Validator
     end
   end
 
-  def is_valid(data)
+  def valid?(data)
     result = nil
     data.each do |row|
       arr_row = row.tr('0', '').chars
@@ -54,7 +51,7 @@ class Validator
     result
   end
 
-  def get_rows
+  def rows
     lines = @puzzle_string.delete("^0-9\n").lines.delete_if { |x| x == "\n" }
     rows = []
     lines.each do |line|
@@ -64,7 +61,7 @@ class Validator
     rows
   end
 
-  def get_columns
+  def columns
     lines = @puzzle_string.delete("^0-9\n").lines.delete_if { |x| x == "\n" }
     columns = []
     lines.each_with_index do |line, line_index|
@@ -79,7 +76,7 @@ class Validator
     columns
   end
 
-  def get_square
+  def squares
     lines = @puzzle_string.delete("^0-9\n").lines.delete_if { |x| x == "\n" }
     squares = Array.new(9, '')
     lines.each_with_index do |line, line_index|
