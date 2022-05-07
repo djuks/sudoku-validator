@@ -1,4 +1,6 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
 
-gem "rspec"
-gem "byebug"
+source 'https://rubygems.org'
+
+gem 'byebug'
+gem 'rspec'
