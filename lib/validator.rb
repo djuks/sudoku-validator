@@ -18,7 +18,7 @@ class Validator
     data.each do |value|
       if data.map{|v| is_valid(v)}.include?(false)
         result = 'Sudoku is invalid.'
-      elsif zero_check(value) == false && is_valid(value)
+      elsif have_zeros(value) == false && is_valid(value)
         result = 'Sudoku is valid but incomplete.'
       else
         result = 'Sudoku is valid.'
@@ -30,40 +30,28 @@ class Validator
 
   private
 
-  def zero_check(data)
-    result = nil
+  def have_zeros(data)
     data.each do |row|
       if row.include?('0')
-        result = false
-        break
+        return false
       else
-        result = true
+        return true
       end
     end
-
-    result
   end
 
   def is_valid(data)
     result = nil
     data.each do |row|
-      if duplication_check(row.tr('0', '').chars)
+      arr_row = row.tr('0', '').chars
+      if arr_row.count == arr_row.uniq.count
         result = true
       else
         result = false
         break
       end
     end
-
     result
-  end
-
-  def duplication_check(arr)
-    if arr.count == arr.uniq.count
-      true
-    else
-      false
-    end
   end
 
   def get_rows
